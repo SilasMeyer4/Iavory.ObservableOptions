@@ -3,6 +3,9 @@
         xmlns:vm="using:GeneratorTestApp.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:options="clr-namespace:ObservableOptions.Options;assembly=ObservableOptions"
+        xmlns:options1="clr-namespace:GeneratorTestApp.Views"
+        xmlns:dataAnnotations="clr-namespace:System.ComponentModel.DataAnnotations;assembly=System.ComponentModel.Annotations"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GeneratorTestApp.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -15,6 +18,119 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Window.DataTemplates>
+        <DataTemplate DataType="options:CheckBoxOption">
+            <Grid ColumnDefinitions="Auto, *" Margin="5">
+                <CheckBox Grid.Column="0" IsChecked="{Binding Value}" Content="{Binding Text}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="options:IEnumOption">
+            <Grid ColumnDefinitions="*, Auto" Margin="5">
+                <TextBlock Grid.Column="0" Text="{Binding Text}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Values}" SelectedItem="{Binding SelectedValue}"
+                          MinWidth="150" />
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="options:TextOption">
+            <Grid ColumnDefinitions="*, Auto" Margin="5">
+                <TextBlock Grid.Column="0" Text="{Binding Text}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <TextBox Grid.Column="1" Text="{Binding Value}"
+                          MinWidth="150" />
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="options:NumericIntOption">
+            <Grid ColumnDefinitions="*, Auto" Margin="5">
+                <TextBlock Grid.Column="0" Text="{Binding Text}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <NumericUpDown Grid.Column="1" Value="{Binding Value}" 
+                               Increment="1" MinWidth="150"/>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="options:NumericDoubleOption">
+            <Grid ColumnDefinitions="*, Auto" Margin="5">
+                <TextBlock Grid.Column="0" Text="{Binding Text}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <NumericUpDown Grid.Column="1" Value="{Binding Value}" 
+                               Increment="1" MinWidth="150"/>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="options:NumericFloatOption">
+            <Grid ColumnDefinitions="*, Auto" Margin="5">
+                <TextBlock Grid.Column="0" Text="{Binding Text}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <NumericUpDown Grid.Column="1" Value="{Binding Value}" 
+                               Increment="1" MinWidth="150"/>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="options:SliderOption">
+            <Grid ColumnDefinitions="*, Auto, Auto" Margin="5">
+                <TextBlock Grid.Column="0" Text="{Binding Text}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                <TextBlock Grid.Column="1" Text="{Binding #Slider.Value, StringFormat={}{0:0}%}"/>
+                <Slider x:Name="Slider" Grid.Column="2" Value="{Binding Value}" MinWidth="150"
+                        Minimum="{Binding Minimum}" Maximum="{Binding Maximum}"
+                        
+                />
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate DataType="options:ThreeStateCheckBoxOption">
+            <Grid ColumnDefinitions="Auto, *" Margin="5">
+                <CheckBox Grid.Column="0" IsChecked="{Binding Value}" IsThreeState="True" Content="{Binding Text}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="options:StringCollectionOption">
+            <Border Classes="BaseBorder">
+                <Grid RowDefinitions="Auto, *, Auto">
+                    <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" LastChildFill="False">
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Text}" />
+                        <Button DockPanel.Dock="Right" Classes="Delete-Btn SquareButtonSizeM"
+                                Command="{Binding $parent[options1:MainWindow].((vm:MainWindowViewModel)DataContext).RemoveListEntryCommand}"
+                                CommandParameter="{Binding}" />
+                    </DockPanel>
+        
+                    <ScrollViewer Grid.Row="1" Height="200" VerticalScrollBarVisibility="Auto">
+                        <Grid RowDefinitions="*">
+                            <ListBox Grid.Row="0" ItemsSource="{Binding Collection}"
+                                     SelectedItem="{Binding SelectedItem}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </ScrollViewer>
+                    <Grid Grid.Row="2" ColumnDefinitions="*, Auto">
+                        <TextBox Grid.Column="0" Name="NewEntryTextBox" />
+                        <Button Grid.Column="1" Classes="AddEntryButton" Command="{Binding $parent[options1:MainWindow].((vm:MainWindowViewModel)DataContext).AddItemCommand}" Margin="0">
+                            <Button.CommandParameter>
+                                <MultiBinding>
+                                    <Binding/>
+                                    <Binding ElementName="NewEntryTextBox" Path="Text"/>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                            <PathIcon Data="{StaticResource add_square_regular}" Height="25" Width="25" />
+                        </Button>
+                    </Grid>
+        
+                </Grid>
+        
+            </Border>
+        </DataTemplate>
+    </Window.DataTemplates>
+
+    <StackPanel Spacing="15" Margin="15">
+        <ItemsControl ItemsSource="{Binding OptionEntries}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </StackPanel>
 
 </Window>

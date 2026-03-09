@@ -3,12 +3,31 @@ using System.Collections.Specialized;
 
 namespace ObservableOptions;
 
+/// <summary>
+/// An option that manages an <see cref="ObservableCollection{T}"/> of items and tracks a selected item.
+/// </summary>
+/// <typeparam name="T">The element type of the collection.</typeparam>
 public class CollectionOption<T> : OptionBase
 {
     private readonly T[] _defaultItems;
 
     private ObservableCollection<T> _collection;
 
+    /// <summary>Gets or sets the currently selected item.</summary>
+    public T? SelectedItem
+    {
+        get => field;
+        set
+        {
+            if (SetField(ref field, value))
+            {
+                
+            }
+        }
+    }
+
+    /// <summary>Initializes a new instance with optional default items.</summary>
+    /// <param name="defaultItems">Items used as the default state. Defaults to an empty collection.</param>
     public CollectionOption(IEnumerable<T>? defaultItems = null)
     {
         _defaultItems = (defaultItems ?? Enumerable.Empty<T>()).ToArray();
@@ -22,6 +41,7 @@ public class CollectionOption<T> : OptionBase
         OnPropertyChanged(nameof(UntypedValue));
     }
 
+    /// <summary>Gets or sets the underlying <see cref="ObservableCollection{T}"/>. Raises <see cref="OptionBase.PropertyChanged"/> on replacement.</summary>
     public ObservableCollection<T> Collection
     {
         get => _collection;
@@ -38,6 +58,7 @@ public class CollectionOption<T> : OptionBase
         }
     }
 
+    /// <inheritdoc/>
     public override object? UntypedValue
     {
         get => Collection.ToArray();
@@ -67,30 +88,37 @@ public class CollectionOption<T> : OptionBase
             OnPropertyChanged(nameof(Collection));
         }
     }
+    /// <inheritdoc/>
     public override object? UntypedDefault => _defaultItems;
 
+    /// <summary>Returns <see langword="true"/> if the collection matches the default items in order.</summary>
     public override bool IsDefault => Collection.SequenceEqual(_defaultItems);
 
+    /// <summary>Adds <paramref name="value"/> to the collection.</summary>
     public void Add(T value)
     {
         Collection.Add(value);
     }
 
+    /// <summary>Resets the collection to the default items.</summary>
     public void ResetToDefault()
     {
         UntypedValue = _defaultItems;
     }
-    
+
+    /// <summary>Removes all items from the collection.</summary>
     public void Clear()
     {
         Collection.Clear();
     }
 
+    /// <summary>Returns <see langword="true"/> if the collection contains <paramref name="value"/>.</summary>
     public bool Contains(T value)
     {
         return Collection.Contains(value);
     }
-    
+
+    /// <summary>Removes the first occurrence of <paramref name="value"/> from the collection.</summary>
     public void Remove(T value)
     {
         Collection.Remove(value);
