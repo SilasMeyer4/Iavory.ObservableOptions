@@ -7,12 +7,12 @@
         <Nullable>enable</Nullable>
         
         <PackageId>Iavory.ObservableOptions</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.1.0</Version>
         <Authors>Silas Meyer</Authors>
         <Description>Observable options with INotifyPropertyChanged support</Description>
         <PackageTags>options;mvvm;observable</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <RepositoryUrl>https://github.com/Iavory/ObservableOptions</RepositoryUrl>
+        <RepositoryUrl>https://github.com/SilasMeyer4/Iavory.ObservableOptions</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 

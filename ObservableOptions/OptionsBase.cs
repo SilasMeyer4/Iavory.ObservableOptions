@@ -1,10 +1,13 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
 
 namespace ObservableOptions;
 
-public class OptionsBase
+public class OptionsBase : INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public ObservableCollection<OptionBase> AllOptions { get; } = new ObservableCollection<OptionBase>();
 
     protected void Initialize()
@@ -18,8 +21,8 @@ public class OptionsBase
 
             SetKey(option, property.Name);
             AllOptions.Add(option);
+            option.PropertyChanged += (_, _) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(option.Key));
         }
-
     }
 
     public void ResetToDefaults()
