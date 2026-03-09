@@ -1,0 +1,24 @@
+## Build output
+bin/
+obj/
+
+## NuGet
+*.nupkg
+*.snupkg
+project.nuget.cache
+project.assets.json
+*.nuget.dgspec.json
+*.nuget.g.props
+*.nuget.g.targets
+
+## Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+
+## OS
+Thumbs.db
+.DS_Store
