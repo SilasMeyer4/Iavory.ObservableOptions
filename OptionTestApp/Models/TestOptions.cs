@@ -1,11 +1,16 @@
-﻿using ObservableOptions;
+﻿using System.ComponentModel.DataAnnotations;
+using ObservableOptions;
 
 namespace GeneratorTestApp.Models;
 
 public enum LogLevel{
+    [Display(Name = "Error")]
     Error,
+    [Display(Name = "Warning")]
     Warning,
+    [Display(Name = "Info")]
     Info,
+    [Display(Name = "Verbose")]
     Verbose
 }
 
